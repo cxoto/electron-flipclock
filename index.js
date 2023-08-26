@@ -1,12 +1,13 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, globalShortcut, Menu } = require("electron");
 const path = require("path");
 
 const createWindow = () => {
   const preload_path = path.join(__dirname, "preload.js");
 
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    fullscreen: true,
+    autoHideMenuBar: true,
+    alwaysOnTop: true,
     webPreferences: {
       preload: preload_path,
     },
@@ -16,6 +17,7 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
+  Menu.setApplicationMenu(null);
   createWindow();
 
   app.on("activate", () => {
@@ -23,10 +25,19 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
+
+  globalShortcut.register("CommandOrControl+Q", () => {
+    app.quit();
+  });
 });
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
+});
+
+app.on("will-quit", () => {
+  globalShortcut.unregister("CommandOrControl+Q");
+  globalShortcut.unregisterAll();
 });
