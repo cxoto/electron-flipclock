@@ -7,8 +7,13 @@ const createWindow = () => {
   const win = new BrowserWindow({
     fullscreen: true,
     autoHideMenuBar: true,
+    frame: false,
+    transparent: true,
     alwaysOnTop: true,
+    focusable: false,
+    skipTaskbar: true,
     webPreferences: {
+      nodeIntegration: true,
       preload: preload_path,
     },
   });

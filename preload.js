@@ -1,10 +1,19 @@
+const Tick = require("@pqina/flip");
+
 window.addEventListener("DOMContentLoaded", () => {
-  const replaceText = (selector, text) => {
-    const element = document.getElementById(selector);
-    if (element) element.innerText = text;
+  const handleTick = (tick) => {
+    Tick.helper.interval(() => {
+      const d = Tick.helper.date();
+      tick.value = {
+        sep: " : ",
+        hours: d.getHours(),
+        minutes: d.getMinutes(),
+        seconds: d.getSeconds(),
+      };
+    });
   };
 
-  for (const dependency of ["chrome", "node", "electron"]) {
-    replaceText(`${dependency}-version`, process.versions[dependency]);
-  }
+  Tick.DOM.create(document.getElementById("tick"), {
+    value: 0,
+  });
 });

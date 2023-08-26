@@ -1,15 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <!-- https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <title>你好!</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Flip Example Preset</title>
+
+    <link rel="stylesheet" href="./flip/flip.min.css" />
   </head>
   <body>
-    <h1>你好!</h1>
-    我们正在使用 Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    和 Electron <span id="electron-version"></span>.
+    <style>
+      body {
+        margin: 10%;
+        padding: 10%;
+        height: 100%;
+        background-color: #373535;
+      }
+      .preset-container-wrapper {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        align-items: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        height: 100%;
+        background-color: #000000;
+      }
+
+      .preset-container-wrapper > * {
+        width: 80vw;
+        min-width: 300px;
+        max-width: 50em;
+      }
+    </style>
+
+    <div class="tick" data-did-init="handleTickInit">
+
+      <div ref={tickRef} className="tick" data-did-init="handleTickInit">
+        <div data-layout="horizontal fit">
+            <span
+                data-key="hours"
+                data-transform="pad(00)"
+                data-view="flip"
+            ></span>
+
+            <span
+                data-view="text"
+                data-key="sep"
+                className="tick-text-inline"
+            ></span>
+
+            <span
+                data-key="minutes"
+                data-transform="pad(00)"
+                data-view="flip"
+            ></span>
+
+            <span
+                data-view="text"
+                data-key="sep"
+                className="tick-text-inline"
+            ></span>
+
+            <span
+                data-key="seconds"
+                data-transform="pad(00)"
+                data-view="flip"
+            ></span>
+        </div>
+    
+    </div>
+
+    <script>
+      function handleTickInit(tick) {
+        Tick.helper.interval(function () {
+                var d = Tick.helper.date();
+                tick.value = {
+                    sep: " : ",
+                    hours: d.getHours(),
+                    minutes: d.getMinutes(),
+                    seconds: d.getSeconds(),
+                };
+            });
+      }
+    </script>
+    <script src="./flip/flip.min.js"></script>
   </body>
 </html>
